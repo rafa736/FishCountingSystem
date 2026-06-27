@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0F172A">
+  <meta property="og:title"
+      content="FishCount AI">
+
+<meta property="og:description"
+      content="YOLOv8 Fish Counting System">
+
+<meta property="og:image"
+      content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
   <title>Tentang – FishCountAI v2</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon"
+      type="image/svg+xml"
+      href="{{ url_for('static', filename='images/logo.svg') }}">
+  <link rel="apple-touch-icon"
+      href="{{ url_for('static', filename='images/logo.svg') }}">
   <style>
     /* ── About-page scoped styles ── */
 
@@ -385,17 +399,23 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <div class="brand-icon">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 20C8 20 14 10 24 14C30 16 34 20 34 20C34 20 30 24 24 26C14 30 8 20 8 20Z" fill="var(--accent)" opacity="0.9"/>
-            <circle cx="27" cy="18" r="2" fill="var(--bg-deep)"/>
-            <path d="M6 15L2 20L6 25" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <span class="brand-name">FishCount<span class="accent">AI</span> <span class="v2-badge">v2</span></span>
-          <span class="brand-sub">Computer Vision Detection System · Portfolio Edition</span>
-        </div>
+          <div class="brand-icon">
+              <img
+                  src="{{ url_for('static', filename='images/logo.svg') }}"
+                  alt="FishCount AI Logo"
+                  class="logo-svg">
+          </div>
+
+          <div class="brand-text">
+              <span class="brand-name">
+                  FishCount<span class="accent">AI</span>
+                  <span class="v2-badge">v2</span>
+              </span>
+
+              <span class="brand-sub">
+                  YOLOv8 Fish Detection & Counting System
+              </span>
+          </div>
       </div>
       <nav class="main-nav">
         <a href="{{ url_for('index') }}" class="nav-link">Beranda</a>
