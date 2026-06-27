@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hasil Deteksi – FishCountAI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M8 20C8 20 14 10 24 14C30 16 34 20 34 20C34 20 30 24 24 26C14 30 8 20 8 20Z" fill="var(--accent)" opacity="0.9"/>
+            <circle cx="27" cy="18" r="2" fill="var(--bg-deep)"/>
+            <path d="M6 15L2 20L6 25" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">FishCount<span class="accent">AI</span></span>
+          <span class="brand-sub">Computer Vision Detection System</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="{{ url_for('index') }}" class="nav-link">Beranda</a>
+        <a href="{{ url_for('about') }}" class="nav-link">Tentang</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="result-main">
+    <p style="text-align:center;padding:4rem;color:var(--text-muted)">
+      Halaman ini diisi secara dinamis melalui JavaScript di halaman utama.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span>FishCount<span class="accent">AI</span></span>
+        <span class="footer-dot">·</span>
+        <span>Computer Vision-Based Fish Counting System</span>
+      </div>
+      <div class="footer-meta">Mata Kuliah Pengolahan Citra · 2026</div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+# Folder ini menyimpan gambar yang diunggah oleh pengguna.
+# File akan dihapus otomatis setelah 24 jam (lihat helper.py cleanup_old_files).

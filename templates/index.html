@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FishCount AI v2 — Portfolio Edition</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- PARTICLE BG -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 20C8 20 14 10 24 14C30 16 34 20 34 20C34 20 30 24 24 26C14 30 8 20 8 20Z" fill="var(--accent)" opacity="0.9"/>
+            <circle cx="27" cy="18" r="2" fill="var(--bg-deep)"/>
+            <path d="M6 15L2 20L6 25" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">FishCount<span class="accent">AI</span> <span class="v2-badge">v2</span></span>
+          <span class="brand-sub">Computer Vision Detection System · Portfolio Edition</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="{{ url_for('index') }}" class="nav-link active">Beranda</a>
+        <a href="{{ url_for('about') }}" class="nav-link">Tentang</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          YOLOv8 · Real-time Detection · Portfolio Edition
+        </div>
+        <h1 class="hero-title">
+          Sistem Penghitungan<br/>
+          <span class="gradient-text">Ikan Otomatis</span>
+        </h1>
+        <p class="hero-desc">
+          Deteksi dan hitung jumlah ikan pada keramba jaring apung secara otomatis
+          menggunakan model deep learning YOLOv8. Unggah gambar dan dapatkan
+          hasil analisis lengkap — termasuk density map dan statistik confidence.
+        </p>
+        <div class="hero-actions">
+          <a href="#upload-section" class="hero-cta">
+            <span>Mulai Deteksi</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+          </a>
+          <a href="#history-section" class="hero-cta-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Riwayat
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-orb orb-1"></div>
+        <div class="hero-orb orb-2"></div>
+        <div class="hero-stats-card">
+          <div class="stat-item">
+            <span class="stat-num">YOLOv8</span>
+            <span class="stat-label">Model</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">≥90%</span>
+            <span class="stat-label">Akurasi</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">v2.0</span>
+            <span class="stat-label">Versi</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SESSION STATS BAR -->
+    <section class="session-bar" id="session-bar">
+      <div class="session-bar-inner">
+        <div class="sbar-item">
+          <span class="sbar-val" id="sb-total-images">0</span>
+          <span class="sbar-label">Gambar Diproses</span>
+        </div>
+        <div class="sbar-divider"></div>
+        <div class="sbar-item">
+          <span class="sbar-val" id="sb-total-fish">0</span>
+          <span class="sbar-label">Total Ikan Terdeteksi</span>
+        </div>
+        <div class="sbar-divider"></div>
+        <div class="sbar-item">
+          <span class="sbar-val" id="sb-avg-conf">—</span>
+          <span class="sbar-label">Rata-rata Confidence</span>
+        </div>
+        <div class="sbar-divider"></div>
+        <div class="sbar-item">
+          <span class="sbar-val" id="sb-avg-time">—</span>
+          <span class="sbar-label">Waktu Rata-rata</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- UPLOAD SECTION -->
+    <section class="upload-section" id="upload-section">
+      <div class="section-header">
+        <h2 class="section-title">Unggah Gambar Ikan</h2>
+        <p class="section-sub">Mendukung PNG, JPG, JPEG, WEBP, BMP · Maks. 16 MB</p>
+      </div>
+
+      <!-- Conf slider -->
+      <div class="conf-control">
+        <label class="conf-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+          </svg>
+          Confidence Threshold:
+          <span class="conf-val" id="conf-display">0.25</span>
+        </label>
+        <input type="range" id="conf-slider" min="10" max="90" value="25" step="5" class="conf-slider" />
+        <span class="conf-hint">Geser untuk mengatur sensitivitas deteksi</span>
+      </div>
+
+      <!-- Drop Zone -->
+      <div class="upload-card" id="upload-card">
+        <div class="drop-zone" id="drop-zone">
+          <input type="file" id="file-input" accept="image/*" hidden />
+
+          <div class="drop-idle" id="drop-idle">
+            <div class="drop-icon-wrap">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <p class="drop-title">Seret &amp; Lepas gambar di sini</p>
+            <p class="drop-sub">atau</p>
+            <button class="btn-choose" onclick="document.getElementById('file-input').click()">Pilih File</button>
+          </div>
+
+          <div class="drop-preview hidden" id="drop-preview">
+            <img id="preview-img" src="" alt="Preview" />
+            <div class="preview-overlay">
+              <button class="btn-change" onclick="document.getElementById('file-input').click()">Ganti Gambar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-footer">
+          <div class="file-info" id="file-info">
+            <span id="file-name">Belum ada file dipilih</span>
+          </div>
+          <button class="btn-detect" id="btn-detect" disabled onclick="startDetection()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            Deteksi Sekarang
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading-overlay hidden" id="loading-overlay">
+        <div class="loading-card">
+          <div class="loader-fish">
+            <svg viewBox="0 0 60 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="fish-body" d="M15 15C15 15 25 5 38 10C46 13 50 15 50 15C50 15 46 17 38 20C25 25 15 15 15 15Z" fill="var(--accent)"/>
+              <circle cx="42" cy="13" r="2" fill="var(--bg-deep)"/>
+              <path class="fish-tail" d="M12 10L5 15L12 20" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="loading-text">Menjalankan deteksi YOLOv8...</p>
+          <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+          <p class="loading-sub">Mohon tunggu sebentar</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULT SECTION (dinamis) -->
+    <section class="result-section hidden" id="result-section"></section>
+
+    <!-- HISTORY SECTION -->
+    <section class="history-section" id="history-section">
+      <div class="section-header">
+        <h2 class="section-title">Riwayat Deteksi Sesi Ini</h2>
+        <p class="section-sub">Hasil deteksi akan tersimpan selama sesi berlangsung</p>
+      </div>
+      <div class="history-list" id="history-list">
+        <div class="history-empty">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <p>Belum ada riwayat deteksi</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODEL INFO -->
+    <section class="model-section">
+      <h2 class="section-title center">Informasi Model</h2>
+      <div class="model-grid">
+        <div class="model-card">
+          <div class="model-icon">🤖</div>
+          <div class="model-label">Model</div>
+          <div class="model-value">{{ model_info.model_name }}</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">🐟</div>
+          <div class="model-label">Kelas Deteksi</div>
+          <div class="model-value">{{ model_info.detection_class }}</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">⚙️</div>
+          <div class="model-label">Framework</div>
+          <div class="model-value">{{ model_info.framework }}</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">🏷️</div>
+          <div class="model-label">Versi Sistem</div>
+          <div class="model-value">v{{ model_info.version }}</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">🎯</div>
+          <div class="model-label">Conf. Default</div>
+          <div class="model-value">{{ model_info.conf_threshold }}</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">📦</div>
+          <div class="model-label">Status Model</div>
+          <div class="model-value {% if model_info.model_loaded %}status-ok{% else %}status-warn{% endif %}">
+            {{ 'Siap' if model_info.model_loaded else 'Demo Mode' }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span>FishCount<span class="accent">AI</span> v2.0</span>
+        <span class="footer-dot">·</span>
+        <span>Computer Vision-Based Fish Counting System</span>
+      </div>
+      <div class="footer-meta">
+        Mata Kuliah Pengolahan Citra &nbsp;·&nbsp; Teknik Informatika — UMRAH &nbsp;·&nbsp; 2026
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

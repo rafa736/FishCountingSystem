@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tentang – FishCountAI v2</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── About-page scoped styles ── */
+
+    .about-hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .about-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--border-hi);
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-hero-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.9rem;
+    }
+
+    .about-hero-sub {
+      font-size: 1rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      max-width: 520px;
+    }
+
+    .about-version-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hi);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      min-width: 160px;
+      box-shadow: var(--shadow-glow), var(--shadow-card);
+    }
+
+    .avc-num {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .avc-label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.4rem;
+    }
+
+    /* Cards grid */
+    .info-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: all 0.22s ease;
+    }
+
+    .info-card:hover {
+      border-color: var(--border-hi);
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-3px);
+    }
+
+    .info-card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .info-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.9rem;
+      color: var(--text);
+    }
+
+    .info-card p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    /* Tech badges */
+    .tech-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .tech-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--text-mid);
+    }
+
+    .tech-badge {
+      padding: 0.2rem 0.65rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--border-hi);
+      border-radius: var(--radius-xs);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Workflow list */
+    .workflow-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .workflow-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.55rem 0;
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .workflow-list li:last-child { border-bottom: none; }
+
+    .wf-num {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border-hi);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 1px;
+    }
+
+    /* Info table */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    .info-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-table tr:last-child { border-bottom: none; }
+
+    .info-table td {
+      padding: 0.6rem 0;
+      vertical-align: top;
+    }
+
+    .info-table td:first-child {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      width: 40%;
+      padding-right: 1rem;
+    }
+
+    .info-table td:last-child {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Pipeline section */
+    .pipeline-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 3.5rem;
+    }
+
+    .pipeline-section .section-title {
+      margin-bottom: 1.75rem;
+    }
+
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      overflow-x: auto;
+    }
+
+    .pipeline-step {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .pipeline-icon-wrap {
+      width: 56px; height: 56px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border-hi);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .pipeline-step:hover .pipeline-icon-wrap {
+      background: rgba(0,200,255,0.22);
+      box-shadow: var(--shadow-glow);
+      transform: scale(1.08);
+    }
+
+    .pipeline-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-mid);
+    }
+
+    .pipeline-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-top: 0.2rem;
+    }
+
+    .pipeline-arrow {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 0 0.25rem;
+    }
+
+    .pipeline-arrow svg {
+      color: var(--accent);
+      opacity: 0.5;
+    }
+
+    /* Dataset card */
+    .dataset-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 3.5rem;
+    }
+
+    .dataset-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .ds-label {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.35rem;
+    }
+
+    .ds-val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      font-family: var(--font-mono);
+    }
+
+    .ds-val span { color: var(--accent); }
+
+    /* CTA strip */
+    .cta-strip {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .cta-inner {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-2) 100%);
+      border: 1px solid var(--border-hi);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .cta-text h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .cta-text p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+    }
+
+    @media (max-width: 900px) {
+      .about-hero { grid-template-columns: 1fr; padding: 4rem 1.5rem 2rem; }
+      .about-version-card { display: none; }
+      .info-grid { grid-template-columns: 1fr; padding: 0 1.5rem 2rem; }
+      .pipeline { flex-direction: column; gap: 0.5rem; }
+      .pipeline-arrow svg { transform: rotate(90deg); }
+      .dataset-card { grid-template-columns: 1fr 1fr; }
+      .cta-inner { flex-direction: column; text-align: center; }
+      .pipeline-section, .dataset-section, .cta-strip { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .dataset-card { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 20C8 20 14 10 24 14C30 16 34 20 34 20C34 20 30 24 24 26C14 30 8 20 8 20Z" fill="var(--accent)" opacity="0.9"/>
+            <circle cx="27" cy="18" r="2" fill="var(--bg-deep)"/>
+            <path d="M6 15L2 20L6 25" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">FishCount<span class="accent">AI</span> <span class="v2-badge">v2</span></span>
+          <span class="brand-sub">Computer Vision Detection System · Portfolio Edition</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="{{ url_for('index') }}" class="nav-link">Beranda</a>
+        <a href="{{ url_for('about') }}" class="nav-link active">Tentang</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <div class="about-hero">
+      <div>
+        <div class="about-hero-badge">
+          <span class="badge-dot"></span>
+          Portfolio Edition · Pengolahan Citra 2026
+        </div>
+        <h1 class="about-hero-title">
+          Tentang<br/>
+          <span class="gradient-text">FishCount AI</span>
+        </h1>
+        <p class="about-hero-sub">
+          Sistem pendeteksian dan penghitungan ikan otomatis berbasis deep learning
+          YOLOv8, dikembangkan sebagai proyek akhir mata kuliah Pengolahan Citra Digital
+          di Teknik Informatika, Universitas Maritim Raja Ali Haji.
+        </p>
+      </div>
+      <div class="about-version-card">
+        <span class="avc-num">v2.0</span>
+        <span class="avc-label">Portfolio<br/>Edition</span>
+      </div>
+    </div>
+
+    <!-- INFO CARDS -->
+    <div class="info-grid">
+
+      <div class="info-card">
+        <div class="info-card-icon">🎯</div>
+        <h3>Tujuan Sistem</h3>
+        <p>
+          Sistem ini dirancang untuk mendeteksi dan menghitung jumlah ikan secara otomatis
+          pada keramba jaring apung menggunakan teknologi computer vision berbasis deep
+          learning YOLOv8. Tujuannya adalah membantu pembudidaya ikan mendapatkan data
+          populasi secara cepat, akurat, dan non-invasif.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon">🧠</div>
+        <h3>Tech Stack</h3>
+        <ul class="tech-list">
+          <li><span class="tech-badge">Python 3.11</span> Backend runtime</li>
+          <li><span class="tech-badge">Flask</span> Web framework (REST API)</li>
+          <li><span class="tech-badge">YOLOv8</span> Object detection model</li>
+          <li><span class="tech-badge">Ultralytics</span> Training & inference engine</li>
+          <li><span class="tech-badge">Pillow</span> Image preprocessing</li>
+          <li><span class="tech-badge">NumPy</span> Komputasi statistik</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon">🔄</div>
+        <h3>Alur Kerja Sistem</h3>
+        <ul class="workflow-list">
+          <li><span class="wf-num">1</span>Pengguna mengunggah gambar ikan via antarmuka web</li>
+          <li><span class="wf-num">2</span>Validasi & preprocessing citra dengan Pillow</li>
+          <li><span class="wf-num">3</span>Inferensi model YOLOv8 custom-trained</li>
+          <li><span class="wf-num">4</span>Ekstraksi bounding box, kelas, dan confidence</li>
+          <li><span class="wf-num">5</span>Komputasi density map dan statistik</li>
+          <li><span class="wf-num">6</span>Rendering hasil anotasi dan pelaporan otomatis</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon">📚</div>
+        <h3>Informasi Akademik</h3>
+        <table class="info-table">
+          <tr><td>Mata Kuliah</td><td>Pengolahan Citra Digital</td></tr>
+          <tr><td>Judul</td><td>Fish Counting System — Keramba Jaring Apung</td></tr>
+          <tr><td>Program Studi</td><td>Teknik Informatika</td></tr>
+          <tr><td>Universitas</td><td>UMRAH — Tanjungpinang</td></tr>
+          <tr><td>Model</td><td>YOLOv8 Custom Trained</td></tr>
+          <tr><td>Versi</td><td>2.0.0 · Portfolio Edition</td></tr>
+          <tr><td>Tahun</td><td>2026</td></tr>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="pipeline-section">
+      <h2 class="section-title center">Pipeline Deteksi</h2>
+      <div class="pipeline">
+
+        <div class="pipeline-step">
+          <div class="pipeline-icon-wrap">📷</div>
+          <div class="pipeline-label">Input Gambar</div>
+          <div class="pipeline-sub">PNG / JPG / WEBP</div>
+        </div>
+        <div class="pipeline-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-icon-wrap">⚙️</div>
+          <div class="pipeline-label">Preprocessing</div>
+          <div class="pipeline-sub">Validasi & resize</div>
+        </div>
+        <div class="pipeline-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-icon-wrap">🤖</div>
+          <div class="pipeline-label">YOLOv8 Inference</div>
+          <div class="pipeline-sub">Deteksi objek</div>
+        </div>
+        <div class="pipeline-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-icon-wrap">🔢</div>
+          <div class="pipeline-label">Penghitungan</div>
+          <div class="pipeline-sub">Count + stats</div>
+        </div>
+        <div class="pipeline-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-icon-wrap">🗺️</div>
+          <div class="pipeline-label">Density Map</div>
+          <div class="pipeline-sub">Grid 4×4</div>
+        </div>
+        <div class="pipeline-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-icon-wrap">📊</div>
+          <div class="pipeline-label">Laporan</div>
+          <div class="pipeline-sub">Visualisasi & unduh</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SPESIFIKASI MODEL -->
+    <div class="dataset-section">
+      <h2 class="section-title" style="margin-bottom:1.25rem">Spesifikasi Model</h2>
+      <div class="dataset-card">
+        <div class="ds-block">
+          <div class="ds-label">Arsitektur</div>
+          <div class="ds-val"><span>YOLOv8</span></div>
+        </div>
+        <div class="ds-block">
+          <div class="ds-label">Conf. Default</div>
+          <div class="ds-val"><span>0.25</span></div>
+        </div>
+        <div class="ds-block">
+          <div class="ds-label">IoU Threshold</div>
+          <div class="ds-val"><span>0.45</span></div>
+        </div>
+        <div class="ds-block">
+          <div class="ds-label">Kelas Deteksi</div>
+          <div class="ds-val"><span>1</span> (Fish)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-strip">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h3>Siap mencoba deteksi?</h3>
+          <p>Unggah gambar ikan dan lihat sistem bekerja secara real-time.</p>
+        </div>
+        <a href="{{ url_for('index') }}" class="hero-cta" style="white-space:nowrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          Mulai Deteksi
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span>FishCount<span class="accent">AI</span> v2.0</span>
+        <span class="footer-dot">·</span>
+        <span>Computer Vision-Based Fish Counting System</span>
+      </div>
+      <div class="footer-meta">
+        Mata Kuliah Pengolahan Citra &nbsp;·&nbsp; Teknik Informatika — UMRAH &nbsp;·&nbsp; 2026
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

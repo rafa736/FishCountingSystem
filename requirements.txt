@@ -1,0 +1,6 @@
+Flask
+ultralytics
+torch
+numpy
+Pillow
+gunicorn
