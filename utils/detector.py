@@ -16,10 +16,10 @@ from PIL import Image
 try:
     from ultralytics import YOLO
     YOLO_AVAILABLE = True
-except ImportError:
+    print("[INFO] Ultralytics imported successfully.")
+except Exception as e:
     YOLO_AVAILABLE = False
-    print("[WARNING] Ultralytics tidak tersedia. Mode demo diaktifkan.")
-
+    print(f"[ERROR] Failed importing ultralytics: {e}")
 
 class FishDetector:
     """
