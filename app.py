@@ -46,6 +46,9 @@ os.makedirs(app.config['RESULTS_FOLDER'], exist_ok=True)
 
 # Inisialisasi komponen utama
 detector  = FishDetector(model_path=app.config['MODEL_PATH'])
+print("="*50)
+print("FishCountingSystem v2.0")
+print("Loading YOLO model...")
 processor = ImageProcessor()
 
 # ── In-memory session history ──────────────────────────────────────────────────

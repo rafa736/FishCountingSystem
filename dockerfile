@@ -19,4 +19,6 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["gunicorn","app:app","--bind","0.0.0.0:8080"]
+ENV YOLO_CONFIG_DIR=/tmp/Ultralytics
+
+CMD ["gunicorn", "app:app", "--bind=0.0.0.0:8080", "--timeout=180", "--preload", "--workers=1", "--threads=2"]

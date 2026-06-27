@@ -11,7 +11,11 @@ Upgrade dari v1:
 
 import os
 import numpy as np
+import torch
 from PIL import Image
+
+torch.set_grad_enabled(False)
+torch.set_num_threads(2)
 
 try:
     from ultralytics import YOLO
@@ -51,6 +55,7 @@ class FishDetector:
         try:
             if os.path.exists(self.model_path) and os.path.getsize(self.model_path) > 0:
                 self.model = YOLO(self.model_path)
+                self.model.model.eval()
                 print(f"[INFO] Model dimuat: {self.model_path}")
             else:
                 self.model = YOLO("yolov8n.pt")
@@ -79,13 +84,14 @@ class FishDetector:
         if self.model is None or not YOLO_AVAILABLE:
             return self._demo_result(output_path, conf)
 
-        results = self.model.predict(
-            source=image_path,
-            conf=conf,
-            iou=self.iou_threshold,
-            save=False,
-            verbose=False,
-        )
+        with torch.inference_mode():
+            results = self.model.predict(
+                source=image_path,
+                conf=conf,
+                iou=self.iou_threshold,
+                save=False,
+                verbose=False,
+            )
 
         detections  = []
         confidences = []
